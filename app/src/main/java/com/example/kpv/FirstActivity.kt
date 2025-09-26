@@ -70,9 +70,7 @@ fun FirstActivityScreen() {
 
         Button(
             onClick = {
-                val intent = Intent(context, SecondActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                }
+                val intent = Intent(context, SecondActivity::class.java)
                 intent.putExtra("ENTERED_TEXT_2", text)
                 context.startActivity(intent)
             },
@@ -87,9 +85,7 @@ fun FirstActivityScreen() {
 
         Button(
             onClick = {
-                val intent = Intent(context, ThirdActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                }
+                val intent = Intent(context, ThirdActivity::class.java)
                 intent.putExtra("ENTERED_TEXT", text)
                 context.startActivity(intent)
             },

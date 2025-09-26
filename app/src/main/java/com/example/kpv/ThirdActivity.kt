@@ -43,9 +43,8 @@ fun ThirdActivityScreen(receivedMes: String?) {
     ) {
         Button(
             onClick = {
-                val intent = Intent(context, FirstActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                }
+                val intent = Intent(context, FirstActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 context.startActivity(intent)
             },
             modifier = Modifier
