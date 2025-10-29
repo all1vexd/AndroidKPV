@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">HW_2</string>
+    <string name="email_label">Email</string>
+    <string name="email_placeholder">example@mail.ru</string>
+    <string name="hide_password">HIDE</string>
+    <string name="show_password">SHOW</string>
+    <string name="password_placeholder">Введите пароль…</string>
+    <string name="confirm">Продолжить</string>
+    <string name="email_empty_error">Email не может быть пустым</string>
+    <string name="email_invalid_error">Неверный формат email</string>
+    <string name="password_empty_error">Пароль не может быть пустым</string>
+    <string name="password_length_error">Пароль должен содержать минимум 8 символов</string>
+    <string name="create_post_button">Создать пост</string>
+    <string name="content_label">Текст поста</string>
+    <string name="title_label">Заголовок</string>
+    <string name="save_button">Сохранить</string>
+    <string name="red">Красный</string>
+    <string name="blue">Синий</string>
+    <string name="green">Зеленый</string>
+</resources>
