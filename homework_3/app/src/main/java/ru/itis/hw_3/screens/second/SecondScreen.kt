@@ -1,4 +1,4 @@
-package ru.itis.hw_3.screens
+package ru.itis.hw_3.screens.second
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -19,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import ru.itis.hw_3.R
+import ru.itis.hw_3.domain.model.ValidationConstants
 import ru.itis.hw_3.domain.service.NotificationService
 
 @Composable
@@ -42,7 +44,7 @@ fun SecondScreen(
             .padding(16.dp)
     ) {
         Text(
-            text = "Редактирование уведомлений",
+            text = context.getString(R.string.edit_title),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 24.dp)
         )
@@ -54,13 +56,13 @@ fun SecondScreen(
             },
             label = {
                 Text(
-                    text = "ID уведомления"
+                    text = context.getString(R.string.notification_id_hint)
                 )
             },
             modifier = Modifier.fillMaxWidth(),
             placeholder = {
                 Text(
-                    text = "Введите число..."
+                    text = context.getString(R.string.id_placeholder)
                 )
             },
             singleLine = true
@@ -75,7 +77,7 @@ fun SecondScreen(
             },
             label = {
                 Text(
-                    text = "Новый текст уведомления"
+                    text = context.getString(R.string.new_message_hint)
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -88,36 +90,42 @@ fun SecondScreen(
             onClick = {
                 val id = notificationId.toIntOrNull()
                 if (id == null) {
-                    Toast.makeText(context, "Ошибка: ID должен быть числом", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, ValidationConstants.ID_NUMBER_ERROR, Toast.LENGTH_SHORT).show()
                 } else {
                     val success = notificationService.updateNotification(notificationId = id, newContent = newMessage)
                     if (success) {
-                        Toast.makeText(context, "Уведомление обновлено!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.notification_updated),
+                            Toast.LENGTH_SHORT).show()
                         newMessage = ""
                         notificationId = ""
                     } else {
-                        Toast.makeText(context, "Ошибка: уведомление с ID $id не найдено", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, ValidationConstants.notificationNotFound(id), Toast.LENGTH_SHORT).show()
                     }
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Обновить уведомление"
+                text = context.getString(R.string.update_notification)
             )
         }
 
         Button(
             onClick = {
                 notificationService.cancelAllNotifications()
-                Toast.makeText(context, "Все уведомления удалены", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.all_notifications_deleted),
+                    Toast.LENGTH_SHORT).show()
                 notificationId = ""
                 newMessage = ""
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Удалить все уведомления"
+                text = context.getString(R.string.delete_all)
             )
         }
 

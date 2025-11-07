@@ -7,8 +7,11 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.RemoteInput
 import ru.itis.hw_3.MainActivity
-import ru.itis.hw_3.data.NotificationRepository
+import ru.itis.hw_3.R
+import ru.itis.hw_3.data.repository.NotificationRepository
 import ru.itis.hw_3.domain.channel.NotificationChannelManager
+import ru.itis.hw_3.domain.model.NotificationConstants
+import ru.itis.hw_3.domain.model.NotificationInfo
 import ru.itis.hw_3.domain.model.NotificationPriority
 import ru.itis.hw_3.domain.receiver.NotificationReplyReceiver
 import kotlin.random.Random
@@ -20,12 +23,6 @@ class NotificationService(
 ) {
 
     private val notificationInfo = mutableMapOf<Int, NotificationInfo>()
-
-    data class NotificationInfo(
-        val channelId: String,
-        val originalPriority: NotificationPriority,
-        val originalTitle: String
-    )
 
     fun createNotification(
         title: String,
@@ -42,7 +39,10 @@ class NotificationService(
         notificationInfo[notificationId] = NotificationInfo(
             channelId = channelId,
             originalPriority = priority,
-            originalTitle = title
+            originalTitle = title,
+            isExpandable = isExpandable,
+            shouldOpenApp = shouldOpenApp,
+            hasReplyAction = hasReplyAction
         )
 
         NotificationRepository.NotificationStorage.addNotification(notificationId)
@@ -82,13 +82,13 @@ class NotificationService(
     }
 
     fun createReplyAction(notificationId:Int): NotificationCompat.Action {
-        val remoteInput = RemoteInput.Builder(EXTRA_REPLY_TEXT)
-            .setLabel("Введите ответ...")
+        val remoteInput = RemoteInput.Builder(NotificationConstants.EXTRA_REPLY_TEXT)
+            .setLabel(context.getString(R.string.reply_label))
             .build()
 
         val replyIntent = Intent(context, NotificationReplyReceiver::class.java).apply {
-            action = ACTION_REPLY
-            putExtra(EXTRA_NOTIFICATION_ID, notificationId)
+            action = NotificationConstants.ACTION_REPLY
+            putExtra(NotificationConstants.EXTRA_NOTIFICATION_ID, notificationId)
         }
 
         val replyPendingIntent = PendingIntent.getBroadcast(
@@ -100,7 +100,7 @@ class NotificationService(
 
         return NotificationCompat.Action.Builder(
             android.R.drawable.ic_menu_send,
-            "Ответить",
+            context.getString(R.string.reply_button),
             replyPendingIntent
         ).addRemoteInput(remoteInput).build()
     }
@@ -119,10 +119,31 @@ class NotificationService(
 
         val builder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("Обновлено: ${info.originalTitle}")
+            .setContentTitle(context.getString(R.string.updated_prefix, info.originalTitle))
             .setContentText(newContent)
             .setPriority(info.originalPriority.priority)
             .setAutoCancel(true)
+
+        if (!newContent.isNullOrEmpty()) {
+            if (info.isExpandable && newContent.length > 100) {
+                builder
+                    .setContentText(newContent.take(100) + context.getString(R.string.ellipsis))
+                    .setStyle(
+                        NotificationCompat.BigTextStyle()
+                            .bigText(newContent)
+                    )
+            } else {
+                builder.setContentText(newContent)
+            }
+        }
+
+        if (info.hasReplyAction) {
+            builder.addAction(createReplyAction(notificationId))
+        }
+
+        if (info.shouldOpenApp) {
+            builder.setContentIntent(createPendingIntent())
+        }
 
         notificationManager.notify(notificationId, builder.build())
         return true
@@ -149,13 +170,4 @@ class NotificationService(
         )
     }
 
-    companion object {
-
-        const val ACTION_REPLY = "ru.itis.hw_3.ACTION_REPLY"
-
-        const val EXTRA_NOTIFICATION_ID = "extra_notification_id"
-
-        const val EXTRA_REPLY_TEXT = "extra_reply_text"
-
-    }
 }

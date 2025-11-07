@@ -1,4 +1,4 @@
-package ru.itis.hw_3.screens
+package ru.itis.hw_3.screens.first.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,9 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ru.itis.hw_3.R
 import ru.itis.hw_3.domain.model.NotificationPriority
 
 @Composable
@@ -26,12 +28,13 @@ fun PriorityDropDown(
     onPrioritySelected: (NotificationPriority) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     val priorities = listOf(
-        NotificationPriority.Max to "Максимальный",
-        NotificationPriority.High to "Высокий",
-        NotificationPriority.Medium to "Средний",
-        NotificationPriority.Low to "Низкий"
+        NotificationPriority.Max to context.getString(R.string.priority_max),
+        NotificationPriority.High to context.getString(R.string.priority_high),
+        NotificationPriority.Medium to context.getString(R.string.priority_medium),
+        NotificationPriority.Low to context.getString(R.string.priority_low)
     )
 
     val currentLabel = priorities.find {

@@ -14,6 +14,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.activity.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import ru.itis.hw_3.domain.model.BroadcastConstants
 import ru.itis.hw_3.viewmodel.SharedViewModel
 
 class MainActivity : ComponentActivity() {
@@ -22,8 +23,8 @@ class MainActivity : ComponentActivity() {
 
     private val replyReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action == "ru.itis.hw_3.REPLY_RECEIVED") {
-                val message = intent.getStringExtra("message")
+            if (intent?.action == BroadcastConstants.ACTION_REPLY_RECEIVED) {
+                val message = intent.getStringExtra(BroadcastConstants.EXTRA_MESSAGE)
                 message?.let {
                     sharedViewModel.addMessage(it)
                 }
@@ -44,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
             replyReceiver,
-            IntentFilter("ru.itis.hw_3.REPLY_RECEIVED")
+            IntentFilter(BroadcastConstants.ACTION_REPLY_RECEIVED)
         )
 
         setContent {

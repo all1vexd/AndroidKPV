@@ -6,9 +6,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ru.itis.hw_3.domain.service.NotificationService
-import ru.itis.hw_3.screens.FirstScreen
-import ru.itis.hw_3.screens.SecondScreen
-import ru.itis.hw_3.screens.ThirdScreen
+import ru.itis.hw_3.screens.first.FirstScreen
+import ru.itis.hw_3.screens.second.SecondScreen
+import ru.itis.hw_3.screens.third.ThirdScreen
 import ru.itis.hw_3.viewmodel.SharedViewModel
 
 @Composable

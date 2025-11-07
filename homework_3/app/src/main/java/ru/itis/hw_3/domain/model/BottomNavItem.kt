@@ -1,4 +1,4 @@
-package ru.itis.hw_3.navigation
+package ru.itis.hw_3.domain.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

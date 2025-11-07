@@ -1,4 +1,4 @@
-package ru.itis.hw_3.data
+package ru.itis.hw_3.data.repository
 
 class NotificationRepository {
 

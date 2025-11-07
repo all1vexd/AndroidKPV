@@ -1,4 +1,4 @@
-package ru.itis.hw_3.screens
+package ru.itis.hw_3.screens.first
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -19,8 +19,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import ru.itis.hw_3.R
 import ru.itis.hw_3.domain.model.NotificationPriority
+import ru.itis.hw_3.domain.model.ValidationConstants
 import ru.itis.hw_3.domain.service.NotificationService
+import ru.itis.hw_3.screens.first.components.PriorityDropDown
+import ru.itis.hw_3.screens.first.components.SwitchSetting
 
 @Composable
 fun FirstScreen(
@@ -45,7 +49,7 @@ fun FirstScreen(
     ) {
 
         Text(
-            text = "Настройки уведомления",
+            text = context.getString(R.string.settings_title),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(bottom = 24.dp)
         )
@@ -58,7 +62,7 @@ fun FirstScreen(
             },
             label = {
                 Text(
-                    text = "Заголовок уведомления"
+                    text = context.getString(R.string.title_hint)
                 )
             },
             modifier = Modifier
@@ -85,7 +89,7 @@ fun FirstScreen(
             },
             label = {
                 Text(
-                    text = "Текст уведомления"
+                    text = context.getString(R.string.message_hint)
                 )
             },
             modifier = Modifier
@@ -108,26 +112,26 @@ fun FirstScreen(
         SwitchSetting(
             checked = isExpandable,
             onCheckedChange = { isExpandable = it },
-            text = "Раскрывать длинный текст",
+            text = context.getString(R.string.expandable_text),
             enabled = message.isNotBlank()
         )
 
         SwitchSetting(
             checked = shouldOpenApp,
             onCheckedChange = { shouldOpenApp = it },
-            text = "Открывать приложение при нажатии"
+            text = context.getString(R.string.open_app)
         )
 
         SwitchSetting(
             checked = hasReplyAction,
             onCheckedChange = { hasReplyAction = it },
-            text = "Добавить кнопку ответа",
+            text = context.getString(R.string.reply_action),
             enabled = true
         )
 
         Button(
             onClick = {
-                titleError = validateTitle(title)
+                titleError = if (title.isBlank()) ValidationConstants.TITLE_EMPTY_ERROR else null
                 if (titleError == null) {
                     val id = notificationService.createNotification(
                         title = title,
@@ -137,21 +141,20 @@ fun FirstScreen(
                         shouldOpenApp = shouldOpenApp,
                         hasReplyAction = hasReplyAction
                     )
-                    Toast.makeText(context, "Уведомление создано с ID: ${id}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.notification_created, id),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Тест уведомления")
+            Text(
+                text = context.getString(R.string.test_notification)
+            )
         }
 
-    }
-}
-
-private fun validateTitle(title: String): String? {
-    return when {
-        title.isBlank() -> "Заголовок не может быть пустым"
-        else -> null
     }
 }

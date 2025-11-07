@@ -1,9 +1,5 @@
-package ru.itis.hw_3.screens
+package ru.itis.hw_3.screens.third
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,8 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import ru.itis.hw_3.R
 import ru.itis.hw_3.viewmodel.SharedViewModel
 
 @Composable
@@ -56,7 +50,7 @@ fun ThirdScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             Text(
-                text = "Сообщения пользователя",
+                text = context.getString(R.string.messages_title),
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
@@ -68,7 +62,7 @@ fun ThirdScreen(
                 },
                 label = {
                     Text(
-                        text = "Новое сообщение"
+                        text = context.getString(R.string.new_message_label)
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -111,7 +105,7 @@ fun ThirdScreen(
                 .align(Alignment.BottomCenter)
         ) {
             Text(
-                text = "Создать сообщение"
+                text = context.getString(R.string.create_message)
             )
         }
     }

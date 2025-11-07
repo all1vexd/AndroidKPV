@@ -1,4 +1,4 @@
-package ru.itis.hw_3.screens
+package ru.itis.hw_3.screens.first.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
