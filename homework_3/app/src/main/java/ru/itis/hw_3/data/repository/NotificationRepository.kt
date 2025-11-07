@@ -1,5 +1,7 @@
 package ru.itis.hw_3.data.repository
 
+import android.app.NotificationManager
+
 class NotificationRepository {
 
     object NotificationStorage {
@@ -25,8 +27,21 @@ class NotificationRepository {
         fun clearAll() {
             createdNotifications.clear()
         }
+
+        fun syncWithSystem(notificationManager: NotificationManager) {
+            val activeNotifications = notificationManager.activeNotifications
+            val activeIds = activeNotifications.map { it.id }.toSet()
+
+            // Удаляем из нашего хранилища те уведомления, которых нет в системе
+            createdNotifications.removeAll { id ->
+                !activeIds.contains(id)
+            }
+        }
+
+        fun isNotificationActive(notificationManager: NotificationManager, id: Int): Boolean {
+            val activeNotifications = notificationManager.activeNotifications
+            return activeNotifications.any { it.id == id }
+        }
     }
-
-
 
 }
