@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import ru.itis.hw_3.domain.model.NotificationPriority
 
 class NotificationChannelManager(

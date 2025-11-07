@@ -4,9 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,25 +47,20 @@ fun ThirdScreen(
     }
 
 
-    DisposableEffect(Unit) {  // Unit - означает что эффект не зависит от параметров
+    DisposableEffect(Unit) {
 
-        // Создаем BroadcastReceiver для приема сообщений
         val broadcastReceiver = object : BroadcastReceiver() {
 
             override fun onReceive(context: Context?, intent: Intent?) {
-                Log.d("ThirdScreen", "Broadcast received: ${intent?.action}")
 
                 when (intent?.action) {
 
                     "ru.itis.hw_3.REPLY_RECEIVED" -> {
 
                         val replyMessage = intent.getStringExtra("message")
-                        Log.d("ThirdScreen", "Reply message: $replyMessage")
 
                         replyMessage?.let {
-
                             thirdScreenViewModel.addMessage(it)
-                            Log.d("ThirdScreen", "Message added to list")
                         }
                     }
                 }
@@ -76,14 +68,9 @@ fun ThirdScreen(
         }
 
         val filter = IntentFilter("ru.itis.hw_3.REPLY_RECEIVED")
-
-        // Регистрируем receiver в LocalBroadcastManager
-        // (он работает только в пределах нашего приложения)
         LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver, filter)
 
-        // onDispose - выполняется когда Composable уходит с экрана
         onDispose {
-            // ОБЯЗАТЕЛЬНО отписываемся от receiver чтобы избежать утечек памяти
             LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver)
         }
     }

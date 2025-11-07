@@ -26,7 +26,7 @@
 
         <receiver
             android:name=".domain.receiver.NotificationReplyReceiver"
-            android:exported="true">
+            android:exported="false">
 
         <intent-filter>
             <action android:name="ru.itis.hw_3.ACTION_REPLY" />
