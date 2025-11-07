@@ -9,13 +9,14 @@ import ru.itis.hw_3.domain.service.NotificationService
 import ru.itis.hw_3.screens.FirstScreen
 import ru.itis.hw_3.screens.SecondScreen
 import ru.itis.hw_3.screens.ThirdScreen
-import ru.itis.hw_3.viewmodel.ThirdScreenViewModel
+import ru.itis.hw_3.viewmodel.SharedViewModel
 
 @Composable
 fun NavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     notificationService: NotificationService,
+    sharedViewModel: SharedViewModel
 ) {
 
     NavHost(
@@ -35,7 +36,8 @@ fun NavGraph(
         }
         composable(route = Screen.Message.route) {
             ThirdScreen(
-                modifier = modifier
+                modifier = modifier,
+                sharedViewModel = sharedViewModel
             )
         }
     }

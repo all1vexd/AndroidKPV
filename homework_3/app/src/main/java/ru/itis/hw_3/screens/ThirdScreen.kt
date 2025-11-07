@@ -31,49 +31,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import ru.itis.hw_3.viewmodel.ThirdScreenViewModel
+import ru.itis.hw_3.viewmodel.SharedViewModel
 
 @Composable
 fun ThirdScreen(
     modifier: Modifier = Modifier,
-    thirdScreenViewModel: ThirdScreenViewModel = viewModel()
+    sharedViewModel: SharedViewModel
 ) {
 
     val context = LocalContext.current
-    val messages = thirdScreenViewModel.messages
+    val messages = sharedViewModel.messages
 
     var message by remember {
         mutableStateOf("")
     }
 
-
-    DisposableEffect(Unit) {
-
-        val broadcastReceiver = object : BroadcastReceiver() {
-
-            override fun onReceive(context: Context?, intent: Intent?) {
-
-                when (intent?.action) {
-
-                    "ru.itis.hw_3.REPLY_RECEIVED" -> {
-
-                        val replyMessage = intent.getStringExtra("message")
-
-                        replyMessage?.let {
-                            thirdScreenViewModel.addMessage(it)
-                        }
-                    }
-                }
-            }
-        }
-
-        val filter = IntentFilter("ru.itis.hw_3.REPLY_RECEIVED")
-        LocalBroadcastManager.getInstance(context).registerReceiver(broadcastReceiver, filter)
-
-        onDispose {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver)
-        }
-    }
 
     Box(
         modifier = modifier
@@ -130,7 +102,7 @@ fun ThirdScreen(
         Button(
             onClick = {
                 if (message.isNotBlank()) {
-                    thirdScreenViewModel.addMessage(message)
+                    sharedViewModel.addMessage(message)
                     message = ""
                 }
 

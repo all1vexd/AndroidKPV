@@ -18,9 +18,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import ru.itis.hw_3.domain.channel.NotificationChannelManager
 import ru.itis.hw_3.domain.service.NotificationService
+import ru.itis.hw_3.viewmodel.SharedViewModel
 
 @Composable
-fun BottomNavigation() {
+fun BottomNavigation(
+    sharedViewModel: SharedViewModel
+) {
     val navController = rememberNavController()
 
     val context = LocalContext.current
@@ -69,7 +72,8 @@ fun BottomNavigation() {
         NavGraph(
             modifier = Modifier.padding(innerPadding),
             navController = navController,
-            notificationService = notificationService
+            notificationService = notificationService,
+            sharedViewModel = sharedViewModel
         )
     }
 }

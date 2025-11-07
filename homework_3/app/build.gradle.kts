@@ -41,6 +41,7 @@ android {
 
 dependencies {
 
+    implementation("androidx.fragment:fragment-ktx:1.8.9")
     implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
