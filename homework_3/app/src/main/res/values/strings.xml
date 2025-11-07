@@ -1,0 +1,65 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">HW_3</string>
+
+    <!-- Screen Titles -->
+    <string name="settings_title">Настройки уведомления</string>
+    <string name="edit_title">Редактирование уведомлений</string>
+    <string name="messages_title">Сообщения пользователя</string>
+
+    <!-- Text Fields -->
+    <string name="title_hint">Заголовок уведомления</string>
+    <string name="message_hint">Текст уведомления</string>
+    <string name="notification_id_hint">ID уведомления</string>
+    <string name="new_message_hint">Новый текст уведомления</string>
+    <string name="new_message_label">Новое сообщение</string>
+    <string name="id_placeholder">Введите число…</string>
+
+    <!-- Switch Labels -->
+    <string name="expandable_text">Раскрывать длинный текст</string>
+    <string name="open_app">Открывать приложение при нажатии</string>
+    <string name="reply_action">Добавить кнопку ответа</string>
+
+    <!-- Buttons -->
+    <string name="test_notification">Тест уведомления</string>
+    <string name="update_notification">Обновить уведомление</string>
+    <string name="delete_all">Удалить все уведомления</string>
+    <string name="create_message">Создать сообщение</string>
+
+    <!-- Priority Labels -->
+    <string name="priority_max">Максимальный</string>
+    <string name="priority_high">Высокий</string>
+    <string name="priority_medium">Средний</string>
+    <string name="priority_low">Низкий</string>
+
+    <!-- Toast Messages -->
+    <string name="notification_created">Уведомление создано с ID: %d</string>
+    <string name="notification_updated">Уведомление обновлено!</string>
+    <string name="all_notifications_deleted">Все уведомления удалены</string>
+    <string name="reply_sent">Ответ отправлен: %s</string>
+
+    <!-- Channel Names -->
+    <string name="channel_max">Максимальный приоритет</string>
+    <string name="channel_high">Высокий приоритет</string>
+    <string name="channel_medium">Средний приоритет</string>
+    <string name="channel_low">Низкий приоритет</string>
+
+    <!-- Channel Descriptions -->
+    <string name="channel_max_desc">Срочные уведомления с ответом</string>
+    <string name="channel_high_desc">Важные уведомления</string>
+    <string name="channel_medium_desc">Обычные уведомления</string>
+    <string name="channel_low_desc">Фоновые уведомления</string>
+
+    <!-- Notification UI -->
+    <string name="reply_label">Введите ответ…</string>
+    <string name="reply_button">Ответить</string>
+    <string name="updated_prefix">Обновлено: %s</string>
+
+    <!-- Navigation -->
+    <string name="nav_settings">Settings</string>
+    <string name="nav_edit">Edit</string>
+    <string name="nav_messages">Messages</string>
+
+    <string name="ellipsis">…</string>
+    <string name="reply_message_template">Ответ на уведомление #%1$s: %2$s</string>
+</resources>
