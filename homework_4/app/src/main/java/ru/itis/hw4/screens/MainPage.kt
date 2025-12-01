@@ -1,0 +1,320 @@
+package ru.itis.hw4.screens
+
+import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import ru.itis.hw4.CoroutineTracker
+import ru.itis.hw4.components.MySwitch
+import ru.itis.hw4.utils.getDispatcherName
+import ru.itis.hw4.utils.parallelCoroutines
+import ru.itis.hw4.utils.sequentialCoroutines
+import kotlin.math.roundToInt
+import kotlin.random.Random
+
+@Composable
+fun MainPage(
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val tracker = remember { CoroutineTracker() }
+
+    var sliderPosition by remember { mutableFloatStateOf(10f) }
+    var expanded by remember { mutableStateOf(false) }
+    var dispatcher by remember { mutableStateOf<CoroutineDispatcher>(Dispatchers.Default) }
+    var inCreateTime by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) }
+    var isParallel by remember { mutableStateOf(false) }
+    var currentJob by remember { mutableStateOf<Job?>(null) }
+
+
+    val onError: (Exception, Int) -> Unit = { exception, index ->
+        when (exception) {
+            is RuntimeException -> {
+                coroutineScope.launch(Dispatchers.Main) {
+                    Toast.makeText(context, "Timeout in coroutine $index", Toast.LENGTH_SHORT).show()
+                }
+            }
+            is IllegalArgumentException -> {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = "Invalid argument in coroutine $index",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+            is IllegalStateException -> {
+                coroutineScope.launch(Dispatchers.Main) {
+                    sliderPosition = 10f
+                    dispatcher = Dispatchers.Default
+                    isParallel = true
+                    inCreateTime = false
+                    Toast.makeText(context, "Settings reset due to illegal state", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    val dispatchersList = listOf(
+        "Dispatchers.Main" to Dispatchers.Main,
+        "Dispatchers.IO" to Dispatchers.IO,
+        "Dispatchers.Default" to Dispatchers.Default,
+        "Dispatchers.Unconfined" to Dispatchers.Unconfined
+    )
+
+    DisposableEffect(Unit) {
+        onDispose {
+            currentJob?.cancel()
+        }
+    }
+
+    Scaffold (
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
+    ) { innerPadding ->
+        Column (
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp)
+        ) {
+
+            Text(
+                text = "Количество запускаемые корутин: ${sliderPosition.toInt()}",
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 18.sp
+            )
+
+            Slider (
+                value = sliderPosition,
+                onValueChange = {
+                    sliderPosition = (it / 5).roundToInt() * 5f
+                },
+                colors = SliderDefaults.colors(
+                    thumbColor = MaterialTheme.colorScheme.secondary,
+                    activeTrackColor = MaterialTheme.colorScheme.secondary,
+                    inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer
+                ),
+                steps = (100 - 10) / 5 - 1,
+                valueRange = 10f..100f
+            )
+
+            Spacer(
+                modifier = Modifier.height(16.dp)
+            )
+
+            Text(
+                text = "Выбранный диспетчер: ${getDispatcherName(dispatcher)}",
+                style = MaterialTheme.typography.bodyLarge,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            Spacer(
+                modifier = Modifier.height(16.dp)
+            )
+
+            Box {
+
+                Button(
+                    onClick = {
+                        expanded = true
+                    }
+                ) {
+                    Text(
+                        text = "Выбрать диспетчер"
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = {
+                        expanded = false
+                    },
+                    modifier = Modifier.align(Alignment.TopStart)
+                ) {
+                    dispatchersList.forEach { (name, dispatcherType) ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = name
+                                )
+                            },
+                            onClick = {
+                                dispatcher = dispatcherType
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Spacer(
+                modifier = Modifier.height(16.dp)
+            )
+
+            MySwitch(
+                checked = isParallel,
+                onCheckedChange = {
+                    isParallel = it
+                },
+                label = "Параллельно"
+            )
+
+            Spacer(
+                modifier = Modifier.height(16.dp)
+            )
+
+            MySwitch(
+                checked = !isParallel,
+                onCheckedChange = {
+                    isParallel = !it
+                },
+                label = "Последовательно"
+            )
+
+            Spacer(
+                modifier = Modifier.height(16.dp)
+            )
+
+            MySwitch(
+                checked = inCreateTime,
+                onCheckedChange = {
+                    inCreateTime = it
+                },
+                label = "Момент создания"
+            )
+
+            Spacer(
+                modifier = Modifier.height(16.dp)
+            )
+
+            if (isLoading) {
+                Button(
+                    onClick = {
+                        currentJob?.cancel()
+                        currentJob = null
+
+                        coroutineScope.launch(Dispatchers.Main) {
+                            Toast.makeText(context, "Отменено ${sliderPosition.toInt() - tracker.totalCount}", Toast.LENGTH_SHORT).show()
+                        }
+
+                        isLoading = false
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onError
+                    )
+                ) {
+                    Text(
+                        text = "Стоп"
+                    )
+                }
+
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
+
+                Text(
+                    text = "Завершено: ${tracker.totalCount} из ${sliderPosition.toInt()}",
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                )
+            } else {
+                Button(
+                    onClick = {
+                        tracker.reset()
+                        isLoading = true
+
+                        currentJob = coroutineScope.launch {
+                            try {
+                                if (isParallel) {
+                                    parallelCoroutines(
+                                        count = sliderPosition.toInt(),
+                                        selectedDispatcher = dispatcher,
+                                        onError = onError,
+                                        inCreateTime = inCreateTime,
+                                        tracker = tracker
+                                    )
+                                } else {
+                                    sequentialCoroutines(
+                                        count = sliderPosition.toInt(),
+                                        selectedDispatcher = dispatcher,
+                                        onError = onError,
+                                        inCreateTime = inCreateTime,
+                                        tracker = tracker
+                                    )
+                                }
+                            } finally {
+                                isLoading = false
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                ) {
+                    Text("Старт")
+                }
+            }
+        }
+    }
+}
+
+
+

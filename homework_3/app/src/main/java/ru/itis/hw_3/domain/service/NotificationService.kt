@@ -111,17 +111,12 @@ class NotificationService(
         newContent: String?
     ): Boolean {
 
-        NotificationRepository.NotificationStorage.syncWithSystem(notificationManager)
+
 
         if (!NotificationRepository.NotificationStorage.containsNotification(notificationId)) {
             return false
         }
 
-        if (!NotificationRepository.NotificationStorage.isNotificationActive(notificationManager, notificationId)) {
-            NotificationRepository.NotificationStorage.removeNotification(notificationId)
-            notificationInfo.remove(notificationId)
-            return false
-        }
 
         val info = notificationInfo[notificationId] ?: return false
         val channelId = info.channelId
