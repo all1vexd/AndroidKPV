@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineDispatcher
@@ -39,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.itis.hw4.CoroutineTracker
+import ru.itis.hw4.R
 import ru.itis.hw4.components.MySwitch
 import ru.itis.hw4.utils.getDispatcherName
 import ru.itis.hw4.utils.parallelCoroutines
@@ -67,13 +69,13 @@ fun MainPage(
         when (exception) {
             is RuntimeException -> {
                 coroutineScope.launch(Dispatchers.Main) {
-                    Toast.makeText(context, "Timeout in coroutine $index", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.error_timeout, index), Toast.LENGTH_SHORT).show()
                 }
             }
             is IllegalArgumentException -> {
                 coroutineScope.launch {
                     snackbarHostState.showSnackbar(
-                        message = "Invalid argument in coroutine $index",
+                        message = context.getString(R.string.error_invalid_argument, index),
                         duration = SnackbarDuration.Short
                     )
                 }
@@ -84,17 +86,17 @@ fun MainPage(
                     dispatcher = Dispatchers.Default
                     isParallel = true
                     inCreateTime = false
-                    Toast.makeText(context, "Settings reset due to illegal state", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,  context.getString(R.string.settings_reset), Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
     val dispatchersList = listOf(
-        "Dispatchers.Main" to Dispatchers.Main,
-        "Dispatchers.IO" to Dispatchers.IO,
-        "Dispatchers.Default" to Dispatchers.Default,
-        "Dispatchers.Unconfined" to Dispatchers.Unconfined
+        stringResource(R.string.dispatchers_main) to Dispatchers.Main,
+        stringResource(R.string.dispatchers_io) to Dispatchers.IO,
+        stringResource(R.string.dispatchers_default) to Dispatchers.Default,
+        stringResource(R.string.dispatchers_unconfined) to Dispatchers.Unconfined
     )
 
     DisposableEffect(Unit) {
@@ -116,7 +118,7 @@ fun MainPage(
         ) {
 
             Text(
-                text = "Количество запускаемые корутин: ${sliderPosition.toInt()}",
+                text = stringResource(R.string.coroutines_count, sliderPosition.toInt()),
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 18.sp
             )
@@ -140,7 +142,10 @@ fun MainPage(
             )
 
             Text(
-                text = "Выбранный диспетчер: ${getDispatcherName(dispatcher)}",
+                text = stringResource(
+                    R.string.selected_dispatcher,
+                    getDispatcherName(dispatcher, context)
+                ),
                 style = MaterialTheme.typography.bodyLarge,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(vertical = 8.dp)
@@ -158,7 +163,7 @@ fun MainPage(
                     }
                 ) {
                     Text(
-                        text = "Выбрать диспетчер"
+                        text = stringResource(R.string.select_dispatcher)
                     )
                 }
 
@@ -194,7 +199,7 @@ fun MainPage(
                 onCheckedChange = {
                     isParallel = it
                 },
-                label = "Параллельно"
+                label = stringResource(R.string.parallel)
             )
 
             Spacer(
@@ -206,7 +211,7 @@ fun MainPage(
                 onCheckedChange = {
                     isParallel = !it
                 },
-                label = "Последовательно"
+                label = stringResource(R.string.sequential)
             )
 
             Spacer(
@@ -218,7 +223,7 @@ fun MainPage(
                 onCheckedChange = {
                     inCreateTime = it
                 },
-                label = "Отложенный запуск"
+                label = stringResource(R.string.delayed_launch)
             )
 
             Spacer(
@@ -232,7 +237,14 @@ fun MainPage(
                         currentJob = null
 
                         coroutineScope.launch(Dispatchers.Main) {
-                            Toast.makeText(context, "Отменено ${sliderPosition.toInt() - tracker.totalCount}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                context.getString(
+                                R.string.cancelled,
+                                sliderPosition.toInt() - tracker.totalCount
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                         isLoading = false
@@ -246,7 +258,7 @@ fun MainPage(
                     )
                 ) {
                     Text(
-                        text = "Стоп"
+                        text = stringResource(R.string.stop)
                     )
                 }
 
@@ -255,7 +267,11 @@ fun MainPage(
                 )
 
                 Text(
-                    text = "Завершено: ${tracker.totalCount} из ${sliderPosition.toInt()}",
+                    text = stringResource(
+                        R.string.completed,
+                        tracker.totalCount,
+                        sliderPosition.toInt()
+                    ),
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
@@ -278,7 +294,8 @@ fun MainPage(
                                         selectedDispatcher = dispatcher,
                                         onError = onError,
                                         inCreateTime = inCreateTime,
-                                        tracker = tracker
+                                        tracker = tracker,
+                                        context = context
                                     )
                                 } else {
                                     sequentialCoroutines(
@@ -286,7 +303,8 @@ fun MainPage(
                                         selectedDispatcher = dispatcher,
                                         onError = onError,
                                         inCreateTime = inCreateTime,
-                                        tracker = tracker
+                                        tracker = tracker,
+                                        context = context
                                     )
                                 }
                             } finally {
@@ -298,7 +316,7 @@ fun MainPage(
                         .fillMaxWidth()
                         .height(56.dp)
                 ) {
-                    Text("Старт")
+                    Text(stringResource(R.string.start))
                 }
             }
         }

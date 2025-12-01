@@ -1,5 +1,6 @@
 package ru.itis.hw4.utils
 
+import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
@@ -12,7 +13,8 @@ suspend fun sequentialCoroutines(
     selectedDispatcher: CoroutineDispatcher,
     onError: (Exception, Int) -> Unit,
     inCreateTime: Boolean,
-    tracker: CoroutineTracker
+    tracker: CoroutineTracker,
+    context: Context
 ) {
     coroutineScope {
         for (i in 1..count) {
@@ -20,11 +22,11 @@ suspend fun sequentialCoroutines(
 
             val job = if (inCreateTime) {
                 launch(selectedDispatcher, start = CoroutineStart.LAZY) {
-                    heavyOperation(onError, i, tracker)
+                    heavyOperation(onError, i, tracker, context)
                 }
             } else {
                 launch(selectedDispatcher) {
-                    heavyOperation(onError, i, tracker)
+                    heavyOperation(onError, i, tracker, context)
                 }
             }
 
@@ -42,7 +44,8 @@ suspend fun parallelCoroutines(
     selectedDispatcher: CoroutineDispatcher,
     onError: (Exception, Int) -> Unit,
     inCreateTime: Boolean,
-    tracker: CoroutineTracker
+    tracker: CoroutineTracker,
+    context: Context
 ) {
 
     val jobs = mutableListOf<Job>()
@@ -52,11 +55,11 @@ suspend fun parallelCoroutines(
 
             val job = if (inCreateTime) {
                 launch(selectedDispatcher, start = CoroutineStart.LAZY) {
-                    heavyOperation(onError, i, tracker)
+                    heavyOperation(onError, i, tracker, context)
                 }
             } else {
                 launch(selectedDispatcher) {
-                    heavyOperation(onError, i, tracker)
+                    heavyOperation(onError, i, tracker, context)
                 }
             }
             jobs.add(job)
