@@ -88,7 +88,7 @@ fun ThirdScreen(
                 .height(80.dp)
         ) {
             Text(
-                text = stringResource(R.string.content_label)
+                text = stringResource(R.string.create_post_button)
             )
         }
     }
