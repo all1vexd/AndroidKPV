@@ -19,16 +19,16 @@ suspend fun sequentialCoroutines(
 
 
             val job = if (inCreateTime) {
-                launch(selectedDispatcher) {
+                launch(selectedDispatcher, start = CoroutineStart.LAZY) {
                     heavyOperation(onError, i, tracker)
                 }
             } else {
-                launch(selectedDispatcher, start = CoroutineStart.LAZY) {
+                launch(selectedDispatcher) {
                     heavyOperation(onError, i, tracker)
                 }
             }
 
-            if (!inCreateTime) {
+            if (inCreateTime) {
                 job.start()
             }
 
@@ -51,18 +51,18 @@ suspend fun parallelCoroutines(
         for (i in 1..count) {
 
             val job = if (inCreateTime) {
-                launch(selectedDispatcher) {
+                launch(selectedDispatcher, start = CoroutineStart.LAZY) {
                     heavyOperation(onError, i, tracker)
                 }
             } else {
-                launch(selectedDispatcher, start = CoroutineStart.LAZY) {
+                launch(selectedDispatcher) {
                     heavyOperation(onError, i, tracker)
                 }
             }
             jobs.add(job)
         }
 
-        if (!inCreateTime) {
+        if (inCreateTime) {
             jobs.forEach { it.start() }
         }
 
