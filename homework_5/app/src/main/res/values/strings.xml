@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App name -->
+    <string name="app_name">MovieVault</string>
+
+    <!-- Login Screen -->
+    <string name="login_title">MovieVault</string>
+    <string name="login_subtitle">Ваша коллекция фильмов</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Пароль</string>
+    <string name="login_button">Войти</string>
+    <string name="register_prompt">Создать аккаунт</string>
+    <string name="email_required">Введите email</string>
+    <string name="password_required">Введите пароль</string>
+    <string name="invalid_email_format">Неверный формат email</string>
+    <string name="invalid_credentials">Неверный email или пароль</string>
+    <string name="user_not_found">Пользователь с таким email не найден</string>
+    <string name="login_error">Ошибка: %1$s</string>
+    <string name="account_deleted_permanently">Срок восстановления (7 дней) истек. Аккаунт удален окончательно.</string>
+
+    <!-- Registration Screen -->
+    <string name="registration_title">Регистрация</string>
+    <string name="name_hint">Имя</string>
+    <string name="confirm_password_hint">Повторите пароль</string>
+    <string name="register_button">Зарегистрироваться</string>
+    <string name="login_prompt">Уже есть аккаунт? Войти</string>
+    <string name="name_required">Имя не может быть пустым</string>
+    <string name="name_too_short">Имя должно быть длиннее 5 символов</string>
+    <string name="password_required_registration">Пароль не может быть пустым</string>
+    <string name="password_too_short">Пароль должен быть длиннее 6 символов</string>
+    <string name="passwords_not_match">Пароли не совпадают</string>
+    <string name="email_already_exists">Пользователь с таким email уже существует</string>
+    <string name="registration_error">Ошибка регистрации: %1$s</string>
+
+    <!-- Movie Screen -->
+    <string name="my_movies_title">Мои фильмы</string>
+    <string name="profile_button">Профиль</string>
+    <string name="sort_action">Сортировка</string>
+    <string name="search_placeholder">Поиск фильмов...</string>
+    <string name="add_movie_button">Добавить фильм</string>
+    <string name="empty_list_message">Список пуст</string>
+    <string name="sort_by_title">Сортировать по</string>
+    <string name="sort_by_rating">Рейтингу (сначала высокие)</string>
+    <string name="sort_by_date">Дате (сначала новые)</string>
+    <string name="sort_by_title_alphabetical">Названию (А-Я)</string>
+
+    <!-- Movie Item -->
+    <string name="unknown_director">Режиссер не указан</string>
+    <string name="delete_action">Удалить</string>
+    <string name="default_rating">0.0</string>
+    <string name="added_date">Добавлено: %s</string>
+    <string name="status_watched">Просмотрено</string>
+    <string name="status_watching">Смотрю</string>
+    <string name="status_planned">В планах</string>
+    <string name="status_dropped">Брошено</string>
+    <string name="status_unknown">Неизвестно</string>
+
+    <!-- Addendum Screen -->
+    <string name="add_movie_title">Добавление фильма</string>
+    <string name="edit_movie_title">Редактирование фильма</string>
+    <string name="movie_title_hint">Название фильма</string>
+    <string name="director_hint">Режиссер</string>
+    <string name="rating_hint">Рейтинг (0.0 - 10.0)</string>
+    <string name="status_hint">Статус</string>
+    <string name="add_button">Добавить</string>
+    <string name="save_changes_button">Сохранить изменения</string>
+    <string name="director_keyword">режиссера</string>
+    <string name="rating_keyword">Рейтинг</string>
+    <string name="title_keyword">название</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Профиль</string>
+    <string name="avatar_description">Аватар пользователя</string>
+    <string name="movies_count_label">Фильмов</string>
+    <string name="average_rating_label">Средний балл</string>
+    <string name="logout_button">Выйти из аккаунта</string>
+    <string name="delete_account_button">Удалить аккаунт</string>
+
+    <!-- Restore Screen -->
+    <string name="restore_access_title">Восстановление доступа</string>
+    <string name="restore_description">Аккаунт %s был удален менее 7 дней назад. Вы можете восстановить его или удалить навсегда.</string>
+    <string name="restore_account_button">Восстановить аккаунт</string>
+    <string name="permanently_delete_button">Удалить окончательно</string>
+
+    <!-- Common -->
+    <string name="back_button">Назад</string>
+
+</resources>
