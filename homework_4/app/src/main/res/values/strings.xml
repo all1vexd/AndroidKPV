@@ -1,0 +1,22 @@
+
+<resources>
+    <string name="app_name">HW4</string>
+    <string name="coroutines_count">Количество запускаемых корутин: %d</string>
+    <string name="select_dispatcher">Выбрать диспетчер</string>
+    <string name="selected_dispatcher">Выбранный диспетчер: %s</string>
+    <string name="parallel">Параллельно</string>
+    <string name="sequential">Последовательно</string>
+    <string name="delayed_launch">Отложенный запуск</string>
+    <string name="start">Старт</string>
+    <string name="stop">Стоп</string>
+    <string name="completed">Завершено: %d из %d</string>
+    <string name="cancelled">Отменено %d</string>
+    <string name="settings_reset">Settings reset due to illegal state</string>
+    <string name="dispatchers_main">Dispatchers.Main</string>
+    <string name="dispatchers_io">Dispatchers.IO</string>
+    <string name="dispatchers_default">Dispatchers.Default</string>
+    <string name="dispatchers_unconfined">Dispatchers.Unconfined</string>
+    <string name="dispatcher_custom">Custom</string>
+    <string name="error_timeout">Timeout in coroutine %d</string>
+    <string name="error_invalid_argument">Invalid argument in coroutine %d</string>
+</resources>
