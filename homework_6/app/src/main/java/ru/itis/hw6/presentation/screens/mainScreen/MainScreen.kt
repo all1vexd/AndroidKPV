@@ -32,11 +32,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import ru.itis.hw6.R
 import ru.itis.hw6.domain.Song
 import ru.itis.hw6.presentation.ui.theme.*
 
@@ -58,7 +58,7 @@ fun MainScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Music Finder",
+                text = stringResource(R.string.music_finder),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -79,7 +79,7 @@ fun MainScreen(
                 },
                 placeholder = {
                     Text(
-                        "Найти песню или исполнителя...",
+                        stringResource(R.string.search_hint),
                         color = Gray200
                     )
                 },
@@ -113,7 +113,7 @@ fun MainScreen(
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                text = "Поиск...",
+                                text = stringResource(R.string.search_loading),
                                 color = Gray200,
                                 style = MaterialTheme.typography.bodyLarge
                             )
@@ -145,7 +145,7 @@ fun MainScreen(
                                 ),
                                 shape = RoundedCornerShape(24.dp)
                             ) {
-                                Text("Повторить", color = White)
+                                Text(stringResource(R.string.retry), color = White)
                             }
                         }
                     }
@@ -160,13 +160,13 @@ fun MainScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "🎵 Добро пожаловать!",
+                                text = stringResource(R.string.welcome_title),
                                 style = MaterialTheme.typography.headlineMedium,
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Введите название песни или исполнителя",
+                                text = stringResource(R.string.welcome_subtitle),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = Gray200
                             )
@@ -182,19 +182,15 @@ fun MainScreen(
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = "🔍",
-                                fontSize = 48.sp
-                            )
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                text = "Ничего не найдено",
+                                text = stringResource(R.string.nothing_found),
                                 style = MaterialTheme.typography.titleLarge,
                                 color = Gray200
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Попробуйте другой запрос",
+                                text = stringResource(R.string.try_another_query),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Gray200.copy(alpha = 0.7f)
                             )

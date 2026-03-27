@@ -36,11 +36,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import ru.itis.hw6.R
 import ru.itis.hw6.domain.SongDetails
 import ru.itis.hw6.presentation.ui.theme.*
 
@@ -49,9 +50,7 @@ fun InfoCardScreen(
     modifier: Modifier = Modifier,
     songId: Long,
     viewModel: InfoCardScreenViewModel = viewModel() {
-        InfoCardScreenViewModel(
-            songId = songId
-        )
+        InfoCardScreenViewModel(songId = songId)
     },
     navigateToMainScreen: () -> Unit
 ) {
@@ -63,7 +62,7 @@ fun InfoCardScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Детали песни",
+                        text = stringResource(R.string.song_details_title),
                         color = White
                     )
                 },
@@ -71,7 +70,7 @@ fun InfoCardScreen(
                     IconButton(onClick = navigateToMainScreen) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад",
+                            contentDescription = stringResource(R.string.back),
                             tint = White
                         )
                     }
@@ -104,7 +103,7 @@ fun InfoCardScreen(
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
-                                text = "Загрузка...",
+                                text = stringResource(R.string.loading),
                                 color = Gray200,
                                 style = MaterialTheme.typography.bodyLarge
                             )
@@ -122,7 +121,7 @@ fun InfoCardScreen(
                             modifier = Modifier.padding(32.dp)
                         ) {
                             Text(
-                                text = "Попробуйте снова",
+                                text = stringResource(R.string.try_again),
                                 fontSize = 24.sp
                             )
                             Spacer(modifier = Modifier.height(16.dp))
@@ -140,7 +139,7 @@ fun InfoCardScreen(
                                 ),
                                 shape = RoundedCornerShape(24.dp)
                             ) {
-                                Text("Повторить", color = White)
+                                Text(stringResource(R.string.retry), color = White)
                             }
                         }
                     }
@@ -218,7 +217,7 @@ fun SongDetailsContent(song: SongDetails) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Альбом: ${song.album}",
+                    text = stringResource(R.string.album_label, song.album),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Gray200
                 )
@@ -226,7 +225,7 @@ fun SongDetailsContent(song: SongDetails) {
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Дата релиза: ${song.releaseDate}",
+                    text = stringResource(R.string.release_date_label, song.releaseDate),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Gray200
                 )
@@ -236,7 +235,7 @@ fun SongDetailsContent(song: SongDetails) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Текст песни",
+            text = stringResource(R.string.lyrics_title),
             style = MaterialTheme.typography.titleLarge,
             color = Purple200
         )
@@ -253,7 +252,7 @@ fun SongDetailsContent(song: SongDetails) {
                 .padding(20.dp)
         ) {
             Text(
-                text = song.lyrics.ifEmpty { "Текст не найден" },
+                text = song.lyrics.ifEmpty { stringResource(R.string.lyrics_not_found) },
                 color = Gray200,
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.fillMaxWidth()

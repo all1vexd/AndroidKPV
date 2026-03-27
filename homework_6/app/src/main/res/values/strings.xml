@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">HW6</string>
+
+    <string name="music_finder">Music Finder</string>
+    <string name="search_hint">Найти песню или исполнителя...</string>
+    <string name="welcome_title">Добро пожаловать!</string>
+    <string name="welcome_subtitle">Введите название песни или исполнителя</string>
+    <string name="search_loading">Поиск...</string>
+    <string name="retry">Повторить</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="try_another_query">Попробуйте другой запрос</string>
+
+    <string name="song_details_title">Детали песни</string>
+    <string name="back">Назад</string>
+    <string name="loading">Загрузка...</string>
+    <string name="try_again">Попробуйте снова</string>
+    <string name="album_label">Альбом: %s</string>
+    <string name="release_date_label">Дата релиза: %s</string>
+    <string name="lyrics_title">Текст песни</string>
+    <string name="lyrics_not_found">Текст не найден</string>
+
+    <string name="error_too_many_requests">Слишком много запросов. Подождите немного.</string>
+    <string name="error_unauthorized">Ошибка авторизации. Проверьте API ключ.</string>
+    <string name="error_not_found">Песня не найдена.</string>
+    <string name="error_server">Ошибка сервера: %d</string>
+    <string name="error_no_internet">Нет подключения к интернету. Проверьте соединение.</string>
+    <string name="error_unknown">Ошибка: %s</string>
+    <string name="error_service_not_found">Сервис не найден.</string>
 </resources>
