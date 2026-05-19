@@ -34,7 +34,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
+import ru.itis.hw6.App
 import coil.compose.AsyncImage
 import ru.itis.hw6.R
 import ru.itis.hw6.domain.Song
@@ -44,8 +48,15 @@ import ru.itis.hw6.presentation.ui.theme.*
 fun MainScreen(
     onCardClick: (Song) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: MainScreenViewModel = viewModel()
 ) {
+    val appComponent = (LocalContext.current.applicationContext as App).appComponent
+    val viewModel: MainScreenViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T =
+                appComponent.mainScreenViewModel() as T
+        }
+    )
     val state by viewModel.state.collectAsState()
 
     Scaffold(

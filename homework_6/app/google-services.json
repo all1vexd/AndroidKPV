@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "598791855811",
+    "project_id": "hw6-r-a8131",
+    "storage_bucket": "hw6-r-a8131.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598791855811:android:f37b51a047c15d17bb4c76",
+        "android_client_info": {
+          "package_name": "ru.itis.hw6"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGJ8hVEM56PXJ1Gj6J8Q0f8KwjyTOkrcI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

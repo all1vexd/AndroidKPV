@@ -3,6 +3,9 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
     id("kotlin-parcelize")
 }
 
@@ -52,7 +55,15 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
+
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.jsoup)
     implementation(libs.coil.compose)

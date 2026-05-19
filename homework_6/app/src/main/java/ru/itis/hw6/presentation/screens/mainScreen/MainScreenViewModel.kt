@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.itis.hw6.App
 import ru.itis.hw6.R
-import ru.itis.hw6.data.SongRepositoryImpl
 import ru.itis.hw6.domain.SearchSongUseCase
 import ru.itis.hw6.domain.Song
+import javax.inject.Inject
 
-class MainScreenViewModel(
-    private val searchSongUseCase: SearchSongUseCase = SearchSongUseCase(SongRepositoryImpl())
+class MainScreenViewModel @Inject constructor(
+    private val searchSongUseCase: SearchSongUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainScreenState())
