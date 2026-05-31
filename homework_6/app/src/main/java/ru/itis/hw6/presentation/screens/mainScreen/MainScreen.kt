@@ -211,7 +211,10 @@ fun MainScreen(
 
                 else -> {
                     LazyColumn {
-                        items(state.searchedSongs) { song ->
+                        items(
+                            items = state.searchedSongs,
+                            key = { song -> song.id }
+                        ) { song ->
                             SongItem(
                                 song = song,
                                 onCardClick = onCardClick

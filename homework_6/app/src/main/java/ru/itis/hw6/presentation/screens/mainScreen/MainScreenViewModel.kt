@@ -1,5 +1,6 @@
 package ru.itis.hw6.presentation.screens.mainScreen
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -129,6 +130,7 @@ sealed interface MainScreenCommand {
     data class InputSearchQuery(val query: String): MainScreenCommand
 }
 
+@Immutable
 data class MainScreenState(
     val query: String = "",
     val searchedSongs: List<Song> = listOf(),
