@@ -2,9 +2,13 @@ package ru.itis.hw6.presentation.navigation
 
 import android.os.Bundle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import ru.itis.hw6.presentation.screens.infoCardScreen.InfoCardScreen
 import ru.itis.hw6.presentation.screens.mainScreen.MainScreen
 
@@ -12,6 +16,12 @@ import ru.itis.hw6.presentation.screens.mainScreen.MainScreen
 fun NavGraph() {
 
     val navController = rememberNavController()
+    val currentEntry by navController.currentBackStackEntryAsState()
+
+    LaunchedEffect(currentEntry) {
+        val route = currentEntry?.destination?.route ?: return@LaunchedEffect
+        FirebaseCrashlytics.getInstance().log("Screen: $route")
+    }
 
     NavHost(
         navController = navController,
@@ -33,16 +43,15 @@ fun NavGraph() {
                     navController.popBackStack()
                 }
             )
-
         }
     }
 }
 
 sealed class Screen(val route: String) {
 
-    data object MainScreen: Screen("mainScreen")
+    data object MainScreen : Screen("mainScreen")
 
-    data object InfoCardScreen: Screen("infoCardScreen/{id}") {
+    data object InfoCardScreen : Screen("infoCardScreen/{id}") {
 
         fun createRoute(songId: Long): String {
             return "infoCardScreen/$songId"
@@ -51,6 +60,5 @@ sealed class Screen(val route: String) {
         fun getSongId(arguments: Bundle?): Long {
             return arguments?.getString("id")?.toLong() ?: 0L
         }
-
     }
 }

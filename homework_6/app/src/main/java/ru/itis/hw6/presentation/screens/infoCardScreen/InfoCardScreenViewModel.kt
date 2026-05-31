@@ -2,22 +2,29 @@ package ru.itis.hw6.presentation.screens.infoCardScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.itis.hw6.App
 import ru.itis.hw6.R
-import ru.itis.hw6.data.SongRepositoryImpl
 import ru.itis.hw6.domain.GetSongDetailsUseCase
 import ru.itis.hw6.domain.SongDetails
 
-class InfoCardScreenViewModel(
-    private val songId: Long
+class InfoCardScreenViewModel @AssistedInject constructor(
+    @Assisted("song_id") val songId: Long,
+    private val getSongDetailsUseCase: GetSongDetailsUseCase
 ) : ViewModel() {
 
-    private val repository = SongRepositoryImpl()
-    private val getSongDetailsUseCase = GetSongDetailsUseCase(repository)
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("song_id") songId: Long
+        ): InfoCardScreenViewModel
+    }
 
     private val _state = MutableStateFlow(InfoCardScreenState())
     val state = _state.asStateFlow()

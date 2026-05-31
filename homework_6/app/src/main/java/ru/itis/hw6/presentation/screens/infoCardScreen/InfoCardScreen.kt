@@ -32,6 +32,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.toString
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,7 +40,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
+import ru.itis.hw6.App
 import coil.compose.AsyncImage
 import ru.itis.hw6.R
 import ru.itis.hw6.domain.SongDetails
@@ -49,11 +54,16 @@ import ru.itis.hw6.presentation.ui.theme.*
 fun InfoCardScreen(
     modifier: Modifier = Modifier,
     songId: Long,
-    viewModel: InfoCardScreenViewModel = viewModel() {
-        InfoCardScreenViewModel(songId = songId)
-    },
     navigateToMainScreen: () -> Unit
 ) {
+    val appComponent = (LocalContext.current.applicationContext as App).appComponent
+    val viewModel: InfoCardScreenViewModel = viewModel(
+        key = songId.toString(),
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T =
+                appComponent.infoCardViewModelFactory().create(songId) as T
+        }
+    )
     val state by viewModel.state.collectAsState()
 
     Scaffold(

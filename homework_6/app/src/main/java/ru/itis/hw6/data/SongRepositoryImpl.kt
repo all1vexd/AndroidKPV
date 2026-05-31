@@ -9,13 +9,11 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.jsoup.Jsoup
 import retrofit2.HttpException
 import retrofit2.Response
-import ru.itis.hw6.data.network.RetrofitClient
+import ru.itis.hw6.data.network.GeniusApi
 import ru.itis.hw6.domain.Song
 import ru.itis.hw6.domain.SongDetails
 
-class SongRepositoryImpl : SongRepository {
-
-    private val api = RetrofitClient.getGeniusApi()
+class SongRepositoryImpl(private val api: GeniusApi) : SongRepository {
 
 
     override fun searchSong(query: String): Flow<List<Song>> = flow {
